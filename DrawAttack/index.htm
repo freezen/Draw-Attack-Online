@@ -1,0 +1,209 @@
+<!DOCTYPE HTML>
+<html> 
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+body{
+	background:url(./img/index.png);
+	text-align:center;
+	position:fixed;
+}
+.opItems{
+	cursor:pointer;
+	margin-top:5px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+}
+#option{
+	margin-top:10px;
+	text-align:left;
+	margin-left:470px;
+}
+#commu{
+	position:absolute;
+	top:-295px;
+	left:385px;
+	background:url(./img/log.png);
+	width:555px;
+	height:280px;
+	text-align: center;
+	padding-top: 50px;
+	opacity:0.75;
+}
+#playerId{
+	box-shadow: 0 0 2px 3px #4189c3;
+	border-radius: 3px;
+	border: 1px solid transparent;
+	padding: 2px 26px 2px 5px;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+	width: 154px;
+	height: 24px;
+	margin-top:10px;
+}
+input[type=submit]{
+	border-radius: 3px;
+	border: 1px solid transparent;
+	background:url("./img/submit.png");
+	width:27px;
+	height:27px;
+	margin-top:10px;
+	margin-left:-5px;
+	box-shadow: 0 0 1px 1px yellow;
+}
+input[type=submit]:hover{
+	background:url("./img/submit0.png");
+}
+#words_id{
+	font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+	margin-top:120px;
+	margin-left:10px;
+}
+#button1{
+	margin-top:120px;
+	background-image:url("./img/Start.png");
+	width:280px;
+	height:73px;
+	margin-left:488px;
+	
+}
+#button1:hover{
+	background-image:url("./img/Start0.png");
+}
+#button3{
+	margin-top:32px;
+	background-image:url("./img/Option.png");
+	width:342px;
+	height:120px;
+	margin-left:460px;
+}
+#button3:hover{
+	background-image:url("./img/Option0.png");
+}
+#button2{
+	margin-top:22px;
+	cursor:hand;
+	background-image:url("./img/Help.png");
+	width:210px;
+	height:116px;
+	margin-left:505px;
+}
+#button2:hover{
+	background-image:url("./img/Help0.png");
+}
+#logo{
+	margin-top:10px;
+	
+}
+</style>
+</head>
+<body>         
+<div id="commu">
+	<div id="words_id">Your ID : </div>
+	<div><input id="playerId" type="text" onclick="clickText();"></div>
+	<div><input type="submit" value="" onclick="my_submit();"></div>
+</div>
+
+<img id="logo" src="./img/logo.png">
+<div id="button1" onclick="clickStart();"></div>
+<div id="button2" onclick="clickScores();"></div>
+<div id="button3" onclick="clickOption();"></div>
+<div id="option"></div>
+
+<script type="text/javascript">  
+	var a,b=null;
+	var state=0;
+	var local=window.localStorage;
+	local.clear();
+	local.setItem("op",1);
+	
+	function getElementLeft(element){
+		var actualLeft = element.offsetLeft;
+		var current = element.offsetParent;
+		while (current !== null){
+			actualLeft += current.offsetLeft;
+			current = current.offsetParent;
+			}
+		return actualLeft;
+	}
+	
+	function getElementTop(element){
+		var actualTop = element.offsetTop;
+		var current = element.offsetParent;
+		while (current !== null){
+			actualTop += current.offsetTop;
+			current = current.offsetParent;
+		}
+		return actualTop;
+	}
+	function clickStart(){
+		if(state==0){
+			a=setInterval("moveDown();",10);
+			state=1;
+		}
+		else {
+			b=setInterval("moveUp();",10);
+			state=0;
+		}
+	}
+	function clickOption(){
+		var op=document.getElementById("option");
+		op.innerHTML="<div id='single' class='opItems' onclick='clickSingle(this);'>Single</div><div id='mul' class='opItems' onclick='clickMultiple(this);'>Multiple</div>";
+		
+	}
+	function clickScores(){
+	}
+	function clickSingle(e){
+		local.setItem("op",1);//¿ªÆôAI£¬µ¥»ú
+		e.style.color="red";
+		var other=document.getElementById("mul");
+		other.style.color="black";
+	}
+	function clickMultiple(e){
+		local.setItem("op",0);
+		e.style.color="red";
+		var other=document.getElementById("single");
+		other.style.color="black";
+	}
+function moveDown(){
+	var commu=document.getElementById("commu");
+	var top=getElementTop(commu);
+	top+=6;
+	if(top>=-55){
+		clearInterval(a);
+	}
+	else{
+		commu.style.top=top+"px";
+	}
+	
+}
+function moveUp(){
+	var commu=document.getElementById("commu");
+	var top=getElementTop(commu);
+	top-=6;
+	if(top<=-295){
+		clearInterval(b);
+	}
+	else{
+		commu.style.top=top+"px";
+	}
+	
+}
+function my_submit(){
+	var text=document.getElementById("playerId");
+	var playerId=text.value;
+	if(playerId==""){
+		text.style.color="red";
+		text.value="Enter with your ID !";
+	}
+	else{
+		local.setItem("playerId",playerId);
+		location.href="./drawTank.htm";
+	}
+}
+function clickText(){
+	var text=document.getElementById("playerId");
+	text.value="";
+	text.style.color="black";
+}
+</script>     
+</body>  
+</html> 

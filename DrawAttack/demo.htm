@@ -1,0 +1,692 @@
+<html>
+<!-- by @Saa noCopyRight-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="keywords" content="game,html5,canvas">
+<title>Shoot game - by @Saa</title>
+<script type='text/javascript' src='./js/gamews.js'></script>
+
+<style>
+body{
+	margin:0px;
+	padding:0px;
+}
+#main{
+	margin:0px;
+	padding:0px;
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+#ripper{
+	opacity:0.5;
+	-webkit-transform: scale(11.8);
+	position:absolute;
+	left:0px;
+	top:0px;
+	margin:0;
+	padding:0;
+	display:none;
+}
+#redVsBlue {
+	position:absolute;
+	margin:0px;
+	padding:0px;
+	top:50px;
+	left:400px;
+	background: url(./img/free_Battle.png);
+	width:285px;
+	height:45px;
+}
+#info{
+	position:absolute;
+	margin:0px;
+	padding:0px;
+	top:50px;
+	left:80px;
+	background: url(./img/info.png);
+	width:229px;
+	height:36px;
+	opacity:0.7;
+	border-radius:10px;
+}
+#p0{display:none;}
+#p1{display:none;}
+#p2{display:none;}
+#p3{display:none;}
+#p4{display:none;}
+#p5{display:none;}
+
+#d5,#d0,#d4,#d3,#d2,#d1{display:none;}
+
+h2{
+	font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+	color:white; 
+	
+}
+#playerName{
+	padding:0px;
+	margin-left:10px;
+	margin-top:4px;
+}
+#kind{
+	padding:0px;
+	margin-left:150px;
+	margin-top:-45px;
+	color:red;
+	text-shadow: -1px 2px 3px black;
+	
+}
+#screenBlack{
+	background: url(./img/screenBlack0.png);
+	width:1280px;
+	height:698px;
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+#scense{
+	position:absolute;
+	top:300px;
+	left:590px;
+	z-index:100;
+}
+.displayNone{
+	display:none;
+}
+#wMap{
+	position :absolute;
+	left:0px;
+	bottom:0px;
+	margin:0px;
+	padding:0px;
+	border-radius:10px;
+	border:5px solid black;
+}
+#messButton{
+	position:absolute;
+	right:0px;
+	top:670px;
+	margin:0px;
+	padding:0px;
+	border-radius:5px;
+	background: url(./img/messButton.png);
+	width:200px;
+	height:25px;
+}
+#input_mess{
+	margin-left:0px;
+	margin-top:210px;
+	width:200px;
+	border-radius:5px;
+	display:none;
+}
+</style>
+
+</head>
+<body>
+<div id="log"></div>
+
+	<canvas id="scense" width=270 height=270></canvas>
+
+	<canvas id="p0" width=270 height=270></canvas>
+	<canvas id="p1" width=270 height=270></canvas>
+	<canvas id="p2" width=270 height=270></canvas>
+	<canvas id="p3" width=270 height=270></canvas>
+	<canvas id="p4" width=270 height=270></canvas>
+	<canvas id="p5" width=270 height=270></canvas>
+	
+	<canvas id="s0" class="displayNone" width=270 height=270></canvas>
+	<canvas id="s1" class="displayNone" width=270 height=270></canvas>
+	<canvas id="s2" class="displayNone" width=270 height=270></canvas>
+	<canvas id="s3" class="displayNone" width=270 height=270></canvas>
+	<canvas id="s4" class="displayNone" width=270 height=270></canvas>
+	<canvas id="s5" class="displayNone" width=270 height=270></canvas>
+	
+	
+	<canvas id="d0" width=270 height=270></canvas>
+	<canvas id="d1" width=270 height=270></canvas>
+	<canvas id="d2" width=270 height=270></canvas>
+	<canvas id="d3" width=270 height=270></canvas>
+	<canvas id="d4" width=270 height=270></canvas>
+	<canvas id="d5" width=270 height=270></canvas>
+	
+	
+	
+	
+	<!--主要骨架-->
+	<div id="game">
+		<canvas id="main" width="1280" height="699" oncontextmenu="window.event.returnValue=false"></canvas>
+	</div>
+	
+	<canvas id="ripper" width=400 height=218></canvas>
+	<div id="redVsBlue"></div>
+	<div id="info">
+		<h2 id="playerName"></h2>
+		<h2 id="kind"></h2>
+	</div>
+	<div id="wMap">
+		<canvas id="miniMap" width="300" height="160"></canvas>
+	</div>
+	<div>
+		<div id="messButton">
+			<div  onclick="clickStart();">&nbsp;</div>
+			<ul id="ulList">
+			</ul>
+			<input id="input_mess" type="text">
+		</div>
+	</div>
+	<!--END 主要骨架-->
+	
+	
+	<!--以下为资源加载-->
+
+	<img id="back2" class="displayNone" src="./img/background2.png">
+	<img id="ai_tank" class="displayNone" src="./img/ai_tank.png">
+	<img id="pic_ai_shadow" class="displayNone" src="./img/pic_ai_shadow.png">
+	<img id="bullet1_enemy" class="displayNone" src="./img/bullet1_enemy.png">
+	<img id="rain" class="displayNone" src="./img/rain.jpg">
+	
+	<div>
+		<audio id="fire3" >
+		<source src="./music/FIRE3.mp3" />
+		</audio>
+	</div>
+	
+	<div>
+		<audio id="fire4" >
+		<source src="./music/FIRE4.mp3" />
+		</audio>
+	</div>
+	
+	<div>
+		<audio id="fire2" >
+		<source src="./music/FIRE2.mp3" />
+		</audio>
+	</div>
+	
+	<div>
+		<audio id="fire1" >
+		<source src="./music/FIRE1.mp3" />
+		</audio>
+	</div>
+	
+	<div>
+		<audio id="hit_music" >
+		<source src="./music/hit.mp3" />
+		</audio>
+	</div>
+
+	<div>
+		<audio id="init" loop>
+		<source src="./music/ccc.mp3" />
+		</audio>
+	</div>
+
+	<div>
+		<audio id="first" >
+		<source src="./music/first.mp3" />
+		</audio>
+	</div>
+
+	<div>
+		<audio id="double" >
+		<source src="./music/double.mp3" />
+		</audio>
+	</div>
+
+	<div>
+		<audio id="three" >
+		<source src="./music/three.mp3" />
+		</audio>
+	</div>
+	<div>
+		<audio id="four" >
+		<source src="./music/four.mp3" />
+		</audio>
+	</div>
+
+	<div>
+		<audio id="five" >
+		<source src="./music/five.mp3" />
+		</audio>
+	</div>
+	<div>
+		<audio id="rain_music" loop>
+		<source src="./music/rain.mp3" />
+		</audio>
+	</div>
+	
+	<div id="screenBlack"></div>
+	
+	<!--绘制粒子效果-->
+	<script src="./others/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./others/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./others/particle.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" src="./js/main.js"></script>
+	<script type="text/javascript" src="./js/ground.js"></script>
+	<script type="text/javascript" src="./js/player.js"></script>
+	<script type="text/javascript" src="./js/Enemy.js"></script>
+	<script type="text/javascript" src="./js/AI.js"></script>
+	<script type="text/javascript" src="./js/scenery.js"></script>
+	<!--<script type="text/javascript" src="./js/weather.js"></script>-->
+	
+
+	
+	<script type="text/javascript">
+		
+		//核心canvas声明
+		var g=null;
+		
+		//加载火炮声音 和 命中 声音 
+		var m_fire3=document.getElementById("fire3");
+		var m_fire4=document.getElementById("fire4");
+		var m_fire2=document.getElementById("fire2");
+		var m_fire1=document.getElementById("fire1");
+		var m_fireHit=document.getElementById("hit_music");
+		var m_init=document.getElementById("init");
+		var m_rain=document.getElementById("rain_music");
+		
+		//map array
+		var map=new Array();
+		map[0]="ws://localhost:8000/websocket";
+		map[1]="ws://localhost:8000/websocket";
+		
+		//加载杀人声音
+		var m_die=new Array();
+		m_die[0]=document.getElementById("first");
+		m_die[1]=document.getElementById("double");
+		m_die[2]=document.getElementById("three");
+		m_die[3]=document.getElementById("four");
+		m_die[4]=document.getElementById("five");
+	
+		//用于  createImageData  的中间过渡操作
+		var canvas_data = new Array();
+		canvas_data[0] = document.getElementById('d0');
+		canvas_data[1] = document.getElementById('d1');
+		canvas_data[2] = document.getElementById('d2');
+		canvas_data[3] = document.getElementById('d3');
+		canvas_data[4] = document.getElementById('d4');
+		canvas_data[5] = document.getElementById('d5');
+		
+		var d = new Array();
+		d[0] = canvas_data[0].getContext('2d');
+		d[1] = canvas_data[1].getContext('2d');
+		d[2] = canvas_data[2].getContext('2d');
+		d[3] = canvas_data[3].getContext('2d');
+		d[4] = canvas_data[4].getContext('2d');
+		d[5] = canvas_data[5].getContext('2d');
+		//END~用于  createImageData  的中间过渡操作			
+		
+		
+		var speedUp=document.getElementById("speedUp");
+		var noHurt=document.getElementById("noHurt");
+		var back2 = document.getElementById("back2");
+		
+		//确定6人参赛，开始比赛
+		var gameStart=1;
+		
+		//天气的转换
+		var trag_rain=0;
+		var rain_place=new Array();
+		rain_place[0]=4300;
+		
+		//加载敌人（其他玩家）
+		var enemys=new Array();
+		
+		//是否开启AI
+		var AI_on=1;
+		//加载AI
+		var ai=new Array();
+		
+		
+		//加载子弹
+		var bullets=new Array();
+		
+		//加载敌人子弹
+		var enemy_bullets=new Array();
+		
+		//加载键盘按键
+		var key=new Array();
+		
+		//时间轴初始值
+		var time=1;
+		
+		//敌人死亡数的音乐 数组index
+		var music_i=0;
+		
+		//敌人死亡数
+		var death_num=0;
+		
+		//自己被击中的晃动屏幕事件 ~
+		var zhen_time=1;
+		var zhen_trigg=0;
+		var zhen_my=null;
+		//END @Saa
+		
+		//enemy被击中的晃动屏幕事件 ~
+		var e_zhen_time=1;
+		var e_zhen_trigg=0;
+		var e_zhen_my;
+		//END @Saa
+		
+		//游戏人数标准值
+		var playerNumInGame=6;
+		
+		//地图加载 默认值
+		var playerMapNum=0;
+
+		//to make sure that the key is  up  or down ,use a array
+		var my_i=0;
+		for(my_i=0;my_i<100;my_i++){
+			key[my_i]=false;
+		}
+		
+		//所有坦克绘制数组
+		var canvas = new Array();
+		var p = new Array();
+		//绘有玩家坦克的canvas
+		canvas[0] = document.getElementById('p0');
+		p[0] = canvas[0].getContext('2d');
+		
+		//阴影绘制
+		var canvas_shadow = new Array();
+		var p_shadow = new Array();
+		
+		//绘有玩家自己坦克的阴影的canvas
+		canvas_shadow[0] = document.getElementById('s0');
+		p_shadow[0] = canvas_shadow[0].getContext('2d');
+		
+
+		
+		var storage = window.localStorage;
+		//获取option
+		if(storage.getItem("op")!=null){
+			AI_on=parseInt(storage.getItem("op"));
+		}
+		else{
+			AI_on=1;
+		}
+		//获取 所选地图 的标识值
+		if(storage.getItem("playerMapNum")!=null){
+			playerMapNum=parseInt(storage.getItem("playerMapNum"));
+		}
+		else{
+			playerMapNum=1;
+		}
+		
+		//场景
+		var scenerys=new Array();
+		
+		//存储坦克图像数组
+		var string = new Array();
+		
+		//通过storage 获取玩家数据
+		player.playerId=storage.getItem("playerId");
+		player.speed=parseInt(storage.getItem("speed"+player.playerId));
+		player.attack=parseInt(storage.getItem("attack"+player.playerId));
+		player.hp=parseInt(storage.getItem("hp"+player.playerId));
+		player.kind=parseInt(storage.getItem("kind"+player.playerId));
+		player.curr_hp=player.hp;
+		player.canvasNum=0;
+		player.alive=1;
+		var s_s=storage.getItem("imageData"+player.playerId);
+		string[0]=s_s.split(",");
+		
+		var mess_a,mess_b=null;//聊天动画的settimeout返回对象存贮在这里
+		var messButtonState=1;//关乎聊天的对话框是否隐藏
+		
+		var touch=null;
+		
+		var dataArea=d[0].createImageData(270,270);
+		for(var z=0;z<1;z++){//共绘制6个玩家 ，此处绘制自己的内个，还剩敌人5个
+			for(var x=0; x<dataArea.width; x++) {
+				for(var y=0; y<dataArea.height; y++) {
+					var index = (y*dataArea.width+x)*4;//calculate index
+					
+					dataArea.data[index] = (string[z][index]);// red
+					dataArea.data[index+1]=(string[z][index+1]);// green
+					dataArea.data[index+2] =(string[z][index+2]);// blue
+					dataArea.data[index+3] = (string[z][index+3]); 
+					
+				}
+			}
+			p[z].putImageData(dataArea,0,0);
+			for(var x=0; x<dataArea.width; x++) {
+				for(var y=0; y<dataArea.height; y++) {
+					var index = (y*dataArea.width+x)*4;  //calculate index
+					if((dataArea.data[index+3] = (string[z][index+3]))!=0){
+						dataArea.data[index] = 0;  
+						dataArea.data[index+1]=0;
+						dataArea.data[index+2] =0;
+						dataArea.data[index+3] =100;
+					}
+					
+				}
+			}
+			p_shadow[z].putImageData(dataArea,0,0);
+		}
+		
+		//开场 逐渐 变小 的动画
+		throughScense();
+	
+		
+		
+		//在页面加玩家信息 ~
+		var pm = document.getElementById("playerName");
+		pm.innerHTML=player.playerId;
+		var kind = document.getElementById("kind");
+		if(player.kind==1){
+			kind.innerHTML="刺客";
+		}
+		else if(player.kind==2){
+			kind.innerHTML="重铠";
+		}
+		else if(player.kind==3){
+			kind.innerHTML="强袭";
+		}
+		else if(player.kind==0){
+			kind.innerHTML="战士";
+		}
+		//END @Saa
+		
+		
+		
+		window.onload = function(){
+			myCanvas = document.getElementById("main");
+	        g = myCanvas.getContext("2d");
+			miniCnavas=document.getElementById("miniMap");
+			mini_g=miniCnavas.getContext("2d");
+			//g.globalCompositeOperation="lighter";
+			/*
+			myCanvas.addEventListener('mouseup', function(event) {
+			
+				if(event.button==0){
+					var iX = event.clientX - myCanvas.offsetLeft + (window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft);
+					var iY = event.clientY - myCanvas.offsetTop + (window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop);
+
+					key[player.K_UP]=false;
+					clearInterval(touch);
+					if((iX>player.screen_x/2)&&(iY<player.screen_y/2)){
+						var a=iX-player.screen_x/2;
+						var b=player.screen_y/2-iY;
+						var r=Math.sqrt(a*a+b*b);
+						var angle=Math.asin(a/r);
+						//alert(Math.sin(Math.asin(a/r)));
+						
+						if(player.angle<angle){
+							touch=setInterval("moveTouch("+angle+",0);",50);
+						}
+						else if((player.angle>angle)&&(player.angle<(angle+Math.PI))){
+							touch=setInterval("moveTouch("+angle+",1);",50);
+						}
+						else if(player.angle>(angle+Math.PI)){
+							touch=setInterval("moveTouch("+angle+",3);",50);
+						}
+					}
+					else if((iX>player.screen_x/2)&&(iY>player.screen_y/2)){
+						var a=iX-player.screen_x/2;
+						var b=iY-player.screen_y/2;
+						var r=Math.sqrt(a*a+b*b);
+						var angle=Math.asin(b/r)+Math.PI/2;
+						if(player.angle<angle){
+							touch=setInterval("moveTouch("+angle+",0);",50);
+						}
+						else if((player.angle>angle)&&(player.angle<(angle+Math.PI))){
+							touch=setInterval("moveTouch("+angle+",1);",50);
+						}
+						else if(player.angle>(angle+Math.PI)){
+							touch=setInterval("moveTouch("+angle+",3);",50);
+						}
+					}
+					else if((iX<player.screen_x/2)&&(iY<player.screen_y/2)){
+						var a=player.screen_x/2-iX;
+						var b=player.screen_y/2-iY;
+						var r=Math.sqrt(a*a+b*b);
+						var angle=Math.asin(b/r)+(Math.PI/2)*3;
+						if((player.angle<angle)&&(player.angle>(angle-Math.PI))){
+							touch=setInterval("moveTouch("+angle+",0);",50);
+						}
+						else if(player.angle>angle){
+							touch=setInterval("moveTouch("+angle+",1);",50);
+						}
+						else if(player.angle<(angle-Math.PI)){
+							touch=setInterval("moveTouch("+angle+",2);",50);
+						}
+					}
+					else if((iX<player.screen_x/2)&&(iY>player.screen_y/2)){
+						var a=player.screen_x/2-iX;
+						var b=iY-player.screen_y/2;
+						var r=Math.sqrt(a*a+b*b);
+						var angle=Math.asin(a/r)+Math.PI;
+						if((player.angle<angle)&&(player.angle>(angle-Math.PI))){
+							touch=setInterval("moveTouch("+angle+",0);",50);
+						}
+						else if(player.angle>angle){
+							touch=setInterval("moveTouch("+angle+",1);",50);
+						}
+						else if(player.angle<(angle-Math.PI)){
+							touch=setInterval("moveTouch("+angle+",2);",50);
+						}
+					}
+				}
+				else if(event.button==2){
+					key[player.K_UP]=false;
+					
+				}
+			});
+			*/
+			
+			
+			//开启socket线程
+			if(AI_on==0){socketInit("init",player.playerId,s_s,player.speed,player.hp,player.kind,player.attack,map[playerMapNum]);}
+			else{main();}//测试运行主调函数
+			//socketInit("init",player.playerId,s_s,player.speed,player.hp,player.kind,player.attack);
+			//main();
+		}
+		
+		function moveTouch(angle,i){
+			if(i==0){
+				if(player.angle<angle){
+					player.angle=(player.angle+(player.speed/30)*(1/(Math.PI*2)))%(Math.PI*2);
+				}
+				else {
+					clearInterval(touch);
+					key[player.K_UP]=true;
+				}
+			}
+			else if(i==1){
+				if(player.angle>angle){	
+					player.angle=(player.angle-(player.speed/30)*(1/(Math.PI*2)))%(Math.PI*2);
+				}
+				else {
+					clearInterval(touch);
+					key[player.K_UP]=true;
+				}
+			}
+			else if(i==2){
+				if(player.angle<(angle-Math.PI)||(player.angle>angle)){
+					player.angle=(player.angle-(player.speed/30)*(1/(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+				}
+				else {
+					clearInterval(touch);
+					key[player.K_UP]=true;
+				}
+			}
+			else if(i==3){
+				if(player.angle>(angle+Math.PI)||(player.angle<angle)){
+					player.angle=(player.angle+(player.speed/30)*(1/(Math.PI*2)))%(Math.PI*2);
+				}
+				else {
+					clearInterval(touch);
+					key[player.K_UP]=true;
+				}
+			}
+		}
+		function getElementLeft(element){
+			var actualLeft = element.offsetLeft;
+			var current = element.offsetParent;
+			while (current !== null){
+				actualLeft += current.offsetLeft;
+				current = current.offsetParent;
+				}
+			return actualLeft;
+		}
+
+		function getElementTop(element){
+			var actualTop = element.offsetTop;
+			var current = element.offsetParent;
+			while (current !== null){
+				actualTop += current.offsetTop;
+				current = current.offsetParent;
+			}
+			return actualTop;
+		}
+
+		function clickStart(){
+			if(messButtonState==0){
+				mess_a=setInterval("moveDown();",10);
+				messButtonState=1;
+			}
+			else {
+				mess_b=setInterval("moveUp();",10);
+				messButtonState=0;
+			}
+		}
+		
+		function moveDown(){
+			var commu=document.getElementById("messButton");
+			var input_mess=document.getElementById("input_mess");
+			var top=getElementTop(commu);
+			top+=6;
+			if(top>=673){
+				clearInterval(mess_a);
+			}
+			else{
+				commu.style.top=top+"px";
+			}
+			commu.style.height="25px";
+			input_mess.style.display="none";
+		}
+		
+		function moveUp(){
+			var commu=document.getElementById("messButton");
+			var input_mess=document.getElementById("input_mess");
+			var top=getElementTop(commu);
+			top-=6;
+			
+			if(top<=(699-262)){
+				clearInterval(mess_b);
+				commu.style.height="230px";
+				input_mess.style.display="block";
+			}
+			else{
+				commu.style.top=top+"px";
+			}
+			
+		}
+		
+	</script>
+</body>
+</html>

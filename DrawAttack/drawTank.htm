@@ -1,0 +1,833 @@
+﻿<!DOCTYPE HTML>
+<html> 
+<head>
+<script type="text/javascript" src="./js/Paint.js"></script>
+<link rel="prerender" href="./demo.html"> 
+<link rel="prefetch" href="./demo.html"> 
+<script type="text/javascript" src="./others/jquery.min.js"></script>
+
+</head>
+<style>
+body{
+	background:url(./img/drawTank.png);
+}
+.displayNone{
+	display:none;
+}
+img{
+	margin:0px;
+	padding:0px;
+}
+#draw{
+	margin-top:162px;
+	padding:0px;
+	-webkit-border-radius: 10px;
+	margin-left:170px;
+	height:300px;
+}
+#main{
+	margin-left:5px;
+}
+#track{
+	margin-left:62px;
+}
+#cannon{
+	margin-left:58px;
+}
+#result{
+	margin:0px;
+	padding:0px;
+}
+#colors{
+	position:absolute;
+	left:70px;
+	top:195px;
+}
+.col{
+	border-radius:15px;
+	box-shadow: 		inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ 
+							hsl(340, 70%, 50%) 0 .1em 3px, hsl(340, 80%, 40%) 0 .3em 1px, /* color border */
+							rgba(0,0,0,0.2) 0 .5em 5px; /* drop shadow */
+	opacity:0.9;
+	width:30px;
+	height:30px;
+	margin-top:25px;
+}
+.col:active{
+	-webkit-transform: 	translateY(.2em);
+	box-shadow: 		inset rgba(255,255,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.2) 0 -0.1em .3em, /* inner shadow */ 
+							rgba(0,0,0,0.4) 0 .1em 1px, /* border */
+							rgba(0,0,0,0.2) 0 .2em 6px; /* drop shadow */
+}
+#red{
+	width:40px;
+	height:40px;
+	background:transparent url(./img/red_light.png) no-repeat scroll -70px -40px
+}
+#green{
+	
+	background:url("./img/green_light.png") no-repeat scroll -70px -40px;
+}
+#blue{
+	
+	background:url("./img/blue_light.png") no-repeat scroll -70px -40px;
+}
+#black{
+	
+	background:url("./img/black_light.png") no-repeat scroll -70px -40px;
+}
+#yellow{
+	
+	background:url("./img/yellow_light.png") no-repeat scroll -70px -40px;
+}
+
+#rectTool,#circleTool,#freeLineTool{
+	margin-right:100px;
+}
+#rectTool{
+	position:absolute;
+	background: url("./img/rectTool0.png");
+	width:54px;
+	height:53px;
+	left:459px;
+	top:590px;
+}
+#circleTool{
+	position:absolute;
+	background: url("./img/circleTool.png");
+	width:54px;
+	height:53px;
+	left:569px;
+	top:590px;
+}
+#freeLineTool{
+	position:absolute;
+	background: url("./img/freeLineTool.png");
+	width:48px;
+	height:44px;
+	left:679px;
+	top:595px;
+}
+#go{
+	position:absolute;
+	left:940px;
+	top:550px;
+	background: url("./img/nextButton1.png");
+	width:270px;
+	height:130px;
+}
+#go:hover{
+	background: url("./img/nextButton3.png");
+}
+
+canvas{
+	margin-top:50px;
+	-webkit-border-radius: 5px;
+}
+#progress {
+	position:absolute;
+	left:1010px;
+	top:340px;
+    border-radius: 5px;
+    border: 0px #CDB38B solid;
+    height:40px;
+	width:408px;
+	-webkit-transform: rotate(-90deg);
+}
+  
+#progress::-webkit-progress-bar {
+    background: url("./img/inkContain.png");
+}
+  
+#progress::-webkit-progress-value {
+	border-radius: 3px;
+    background: url("./img/ink.png");
+}
+
+#pen_width {
+	position:absolute;
+	left:625px;
+	top:665px;
+    border-radius: 5px;
+    border: 0px #CDB38B solid;
+    width:150px;
+	height:30px;
+	background:#8B8B83;
+	padding-left:6px;
+	padding-top:3px;
+	display:none;
+}
+  
+#testResult{
+	position:absolute;
+	left:526px;
+	top:209px;
+	margin:0px;
+	padding:0px;
+	display:none;
+}
+#eraser1{
+	position:absolute;
+	background: url("./img/eraser.png");
+	width:49px;
+	height:51px;
+	left:285px;
+	top:500px;
+}
+#eraser2{
+	position:absolute;
+	background: url("./img/eraser.png");
+	width:49px;
+	height:51px;
+	left:635px;
+	top:500px;
+}
+#eraser3{
+	position:absolute;
+	left:985px;
+	background: url("./img/eraser.png");
+	width:49px;
+	height:51px;
+	top:500px;
+}
+#eraser1:hover{
+	background: url("./img/eraser0.png");
+}
+#eraser2:hover{
+	background: url("./img/eraser0.png");
+}
+#eraser3:hover{
+	background: url("./img/eraser0.png");
+}
+#vv{
+	position:absolute;
+	top:50px;
+	left:270px;
+	display:none;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+	color:gray;
+	border: 1px solid transparent;
+	border-radius:5px;
+	padding:10px 0px 10px 0px;
+	background: #EEEED1;
+}
+.tankValue{
+	background:#AEEEEE;
+}
+#screenBlack{
+	background: url(./img/screenBlack.png);
+	display:none;
+	width:1280px;
+	height:698px;
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+#circleHelp{
+	display:none;
+}
+#circleHelp1{
+	display:none;
+}
+</style>
+
+<body> 
+
+
+<span>
+
+<span id="colors">
+<div id="red" onclick="clickRed();" class="col"></div>
+<div id="black" onclick="clickBlack();" class="col"></div>
+<div id="blue" onclick="clickBlue();" class="col"></div>
+<div id="yellow" onclick="clickYellow();" class="col"></div>
+<div id="green" onclick="clickGreen();" class="col"></div>
+</span>
+
+<div id="draw">
+
+<span id="canvas_1"><canvas id="main" width="270" height="270"></canvas></span>
+
+
+
+<span id="canvas_2"><canvas id="track" width="270" height="270"></canvas></span>
+
+
+
+<span id="canvas_3"><canvas id="cannon" width="270" height="270"></canvas></span>
+
+</div>
+
+<span id="ink">
+	<progress value="42000" max="42000" min="0" id="progress"></progress>
+</span>
+
+<span id="eraser1" onclick="clickEraser1();">
+</span>
+
+<span id="eraser2" onclick="clickEraser2();">
+</span>
+
+<span id="eraser3" onclick="clickEraser3();">
+</span>
+
+
+
+<span id="rectTool" onclick="clickRect();">
+</span>
+
+<span id="circleTool"   onclick="clickCircle();">
+</span>
+
+<span id="freeLineTool" onclick="clickFreeLine();">
+</span>
+<span id="pen_width">
+	<input type="range" onmouseup="changeW(this);"  value="30" />
+</span>
+
+<span id="go" onclick="clickGo();">
+</span>
+
+
+<div id="screenBlack"></div>
+
+<div id="vv">
+[ YOUR  TANK ]<br/><br/><br/>
+<div>ATTACK :<h3 class="tankValue" id="_attack"></h3></div>
+<div>HP     :<h3 class="tankValue" id="_hp"></h3></div>
+<div>SPEED  :<h3 class="tankValue" id="_speed"></h3></div>
+<div>属性   :<h3 class="tankValue" id="_recover"></h3></div>
+</div>
+
+
+
+
+
+
+<div id="testResult">
+<canvas id="result" width="270" height="270"></canvas>
+</div>
+
+<canvas id="circleHelp" width="270" height="270"></canvas>
+<canvas id="circleHelp1" width="270" height="270"></canvas>
+<img src="./img/red_light.png" class="displayNone" id="red_col"/>
+<img src="./img/black_light.png" class="displayNone" id="black_col"/>
+<img src="./img/blue_light.png" class="displayNone" id="blue_col"/>
+<img src="./img/yellow_light.png" class="displayNone" id="yellow_col"/>
+<img src="./img/green_light.png" class="displayNone" id="green_col"/>
+<img src="./img/messButton.png" class="displayNone" id="cccc"/>
+<script type="text/javascript"> 
+
+var storage= window.localStorage;
+var playerId="";
+if(!(playerId=storage.getItem("playerId"))){
+	playerId="001";
+	storage.setItem("playerId",playerId);
+}
+var red_col=document.getElementById("red_col");
+var black_col=document.getElementById("black_col");
+var blue_col=document.getElementById("blue_col");
+var yellow_col=document.getElementById("yellow_col");
+var green_col=document.getElementById("green_col");
+var cccc=document.getElementById("cccc");
+
+var canvas1 = document.getElementById('main');
+var canvas2 = document.getElementById('track');
+var canvas3 = document.getElementById('cannon');
+var circleHelp = document.getElementById('circleHelp');
+var circleHelp1 = document.getElementById('circleHelp1');
+ 
+var main = canvas1.getContext('2d');// the tank base 
+var track = canvas2.getContext('2d');//the track of tank
+var cannon = canvas3.getContext('2d');//the gun of tank
+var circleAll= circleHelp.getContext('2d');//the gun of tank
+var circleAll_1= circleHelp1.getContext('2d');//the gun of tank
+
+var INK=42000;
+var leftInk=INK;//left ink to draw ,the begin ink is 900
+
+var progress = document.getElementById('progress');
+
+var rectTool = document.getElementById('rectTool');
+var circleTool = document.getElementById('circleTool');
+var lineTool = document.getElementById('lineTool');
+var freeLineTool = document.getElementById('freeLineTool');
+var pen_width = document.getElementById('pen_width');
+
+var pen=0;//the type of the pen ,0:Rect 1:circle 2:line 3:freeline 4:eraser
+var pen_col=0;//填充颜色，默认红色，1：黑色，2：蓝色，3：黄色，4：绿色
+
+
+var drawArea_x=270;//the draw area length of x
+var drawArea_y=270;
+
+
+var paint1 = new Paint(canvas1);
+paint1.initCanvas();
+paint1.initForDrawingFreeLine();
+
+var paint2 = new Paint(canvas2);
+paint2.initCanvas();
+paint2.initForDrawingFreeLine();
+
+var paint3 = new Paint(canvas3);
+paint3.initCanvas();
+paint3.initForDrawingFreeLine();
+
+var paint4 = new Paint(circleHelp);
+paint4.initCanvas();
+paint4.initForDrawingFreeLine();
+
+var dataArea1 = main.createImageData(drawArea_x,drawArea_y);
+var dataArea2 = track.createImageData(drawArea_x,drawArea_y);
+var dataArea3 = cannon.createImageData(drawArea_x,drawArea_y);
+var dataArea4 = circleAll.createImageData(drawArea_x,drawArea_y);
+var dataArea5 = circleAll_1.createImageData(drawArea_x,drawArea_y);
+
+
+var paint5 = new Paint(circleHelp1);
+paint5.initCanvas();
+paint5.initForDrawingFreeLine();
+
+clickRed();//画笔颜色，默认红色，1：黑色，2：蓝色，3：黄色，4：绿色
+var string="";
+var attack=0;
+var move=0;
+var speed=0;
+var hp=0;
+var isFull=false;
+var kind=-1;
+
+var moveLeft=null;
+var moveRight=null;
+
+var dark=null;
+var my_opacity=0;
+
+function getPX(e){
+	e=e||window.event;
+	var x=e.pageX||(e.clientX+(document.documentElement.scrollLeft||document.body.scrollLeft));
+	return x;
+}
+//获取鼠标位置Y坐标
+function getPY(e){
+	e=e||window.event;
+	var y=e.pageY||(e.clientY+(document.documentElement.scrollTop||document.body.scrollTop));
+	return y;
+}
+function getElementLeft(element){
+	var actualLeft = element.offsetLeft;
+	var current = element.offsetParent;
+	while (current !== null){
+		actualLeft += current.offsetLeft;
+		current = current.offsetParent;
+		}
+	return actualLeft;
+}
+
+function getElementTop(element){
+	var actualTop = element.offsetTop;
+	var current = element.offsetParent;
+	while (current !== null){
+		actualTop += current.offsetTop;
+		current = current.offsetParent;
+	}
+	return actualTop;
+}
+function deduceInk_main(){
+	leftInk=INK;
+	var data1 = main.getImageData(0, 0, drawArea_x, drawArea_y);
+	deduceInk(data1);
+	var data2 = track.getImageData(0, 0,drawArea_x,drawArea_y);
+	deduceInk(data2);
+	var data3 = cannon.getImageData(0, 0,drawArea_x,drawArea_y);
+	deduceInk(data3);
+	progress.value=leftInk;
+}
+
+function clickNext(){
+
+	leftInk=INK;
+
+	var data1 = main.getImageData(0, 0, drawArea_x, drawArea_y);
+	deduceInk(data1);
+	hp=INK-leftInk;
+
+	
+	var data2 = track.getImageData(0, 0,drawArea_x,drawArea_y);
+	deduceInk(data2);
+	move=INK-leftInk-hp;
+	speed=Math.floor(move/1320);
+	
+
+	var data3 = cannon.getImageData(0, 0,drawArea_x,drawArea_y);
+	deduceInk(data3);
+	attack=parseInt((INK-leftInk-hp-move)/45);
+	
+	hp=Math.floor(hp/35);
+	
+	if(speed>60){
+		kind=1;
+	}
+	else if(hp>4500){
+		kind=2;
+	}
+	else if(attack>550){
+		kind=3;
+	}
+	else{
+		kind=0;
+	}
+	
+
+	progress.value=leftInk;
+	
+		
+
+	if (leftInk>0)
+	{	
+		var v1=document.getElementById('_attack');
+		var v2=document.getElementById('_hp');
+		var v3=document.getElementById('_speed');
+		var v4=document.getElementById('_recover');
+		
+		v1.innerHTML=attack;
+		v2.innerHTML=hp;
+		v3.innerHTML=speed;
+		if(kind==1){
+			v4.innerHTML="刺客";
+		}
+		else if(kind==2){
+			v4.innerHTML="重铠";
+		}
+		else if(kind==3){
+			v4.innerHTML="强袭";
+		}
+		else if(kind==0){
+			v4.innerHTML="战士";
+		}
+		
+		storage.setItem("speed"+playerId,speed);
+		storage.setItem("hp"+playerId,hp);
+		storage.setItem("attack"+playerId,attack);
+		storage.setItem("kind"+playerId,kind);
+		
+		makeTransformers();
+		action();
+		
+	}
+	else {
+		alert("The ink is not enough now!");
+		var buttonGo = document.getElementById('buttonGo');
+		buttonGo.src="./img/nextButton0.png";
+		var canvas_text = document.getElementById('result');
+		var c = canvas_text.getContext('2d');// the tank base 
+		c.clearRect(0,0,drawArea_x,drawArea_y);
+		clickEraser();
+		isFull=true;
+	}
+	
+}
+function action(){
+	var span_canvas3=document.getElementById('canvas_3');
+	var span_canvas1=document.getElementById('canvas_1');
+	var span_canvas2=document.getElementById('canvas_2');
+	var left3=getElementLeft(span_canvas3);
+	var left1=getElementLeft(span_canvas1);
+	var left2=getElementLeft(span_canvas2)-62;
+	var top1=getElementTop(span_canvas1)-50;
+	span_canvas3.style.position="absolute";
+	span_canvas1.style.position="absolute";
+	span_canvas2.style.position="absolute";
+	span_canvas3.style.left=left3+"px";
+	span_canvas1.style.left=left1+"px";
+	span_canvas2.style.left=left2+"px";
+	span_canvas3.style.top=top1+"px";
+	span_canvas1.style.top=top1+"px";
+	span_canvas2.style.top=top1+"px";
+	
+	moveLeft=setInterval("canLeft();",3);
+	moveRight=setInterval("canRight();",3);
+	canvas1.style.opacity="0.7";
+	canvas2.style.opacity="0.7";
+	canvas3.style.opacity="0.7";
+}
+function canLeft(){
+	var span_canvas3=document.getElementById('canvas_3');
+	var leftcc=getElementLeft(span_canvas3);
+	leftcc-=2;
+	if(leftcc<=469){
+
+		clearInterval(moveLeft);
+		canvas1.style.display="none";
+		canvas2.style.display="none";
+		canvas3.style.display="none";
+		var testResult=document.getElementById('testResult');
+		testResult.style.display="block";
+	}
+	else{
+		span_canvas3.style.left=leftcc+"px";
+	}
+}
+function canRight(){
+	var span_canvas1=document.getElementById('canvas_1');
+	var leftbb=getElementLeft(span_canvas1);
+	leftbb+=2;
+	if(leftbb>=526){
+		clearInterval(moveRight);
+	}
+	else{
+		span_canvas1.style.left=leftbb+"px";
+	}
+}
+
+function makeTransformers(){ //制造变形金刚 方法: 1收集 2合成 3绘制
+
+	var canvas_text = document.getElementById('result');
+ 
+	var c = canvas_text.getContext('2d');// the tank base 
+	
+	var data1 = main.getImageData(0, 0, drawArea_x, drawArea_y);
+	var data2 = track.getImageData(0, 0,drawArea_x,drawArea_y);
+	var data3 = cannon.getImageData(0, 0,drawArea_x,drawArea_y);
+
+	var index;
+	var index2;
+	var index3;
+	
+	for(var x=0; x<dataArea1.width; x++) {
+		for(var y=0; y<dataArea1.height; y++) {
+	    
+			index = (y*dataArea1.width+x)*4;  //calculate index
+
+			index2=(y*dataArea1.width+x+Math.floor(paint2.down_x_reset)-(drawArea_x/2-Math.floor(Math.abs(paint1.down_x_reset-paint1.up_x_reset)/2)-(Math.abs(paint2.down_x_reset-paint2.up_x_reset))))*4;
+
+			index3 = (y*dataArea1.width+x-Math.floor(paint2.down_x_reset)+(drawArea_x/2-Math.floor(Math.abs(paint1.down_x_reset-paint1.up_x_reset)/2)-(Math.abs(paint2.down_x_reset-paint2.up_x_reset))))*4;
+			
+			if(data3.data[index+3]!=0){
+				dataArea1.data[index] = data3.data[index];   // red
+				dataArea1.data[index+1]=data3.data[index+1];// green
+				dataArea1.data[index+2] =data3.data[index+2];// blue
+				dataArea1.data[index+3] = data3.data[index+3]; 
+			}
+			else if(data1.data[index+3]!=0){
+				dataArea1.data[index] = data1.data[index];   // red
+				dataArea1.data[index+1]=data1.data[index+1];// green
+				dataArea1.data[index+2] =data1.data[index+2];// blue
+				dataArea1.data[index+3] = data1.data[index+3]; 
+			}
+			else{
+				dataArea1.data[index] = data2.data[index2]+data2.data[index3];   // red
+				dataArea1.data[index+1]=data2.data[index2+1]+data2.data[index3+1];// green
+				dataArea1.data[index+2] =data2.data[index2+2]+data2.data[index3+2];// blue
+				dataArea1.data[index+3] = data2.data[index2+3]+data2.data[index3+3]; 
+			}
+		}
+	}
+	c.putImageData(dataArea1,0,0);
+	
+
+	for (var i=0;i<291600 ;i++ )//270*270*4=291600
+	{
+		string=string+dataArea1.data[i].toString()+",";
+	}
+	
+	storage.setItem("imageData"+playerId,string);//应传到后台
+
+	//Canvas2Image.saveAsPNG(c);
+}
+function clickGo(){
+	var buttonGo = document.getElementById('go');
+	buttonGo.style.background="url(./img/nextButton0.png)";
+	clickNext();
+	if (!isFull)
+	{
+		setTimeout("href_my1()",3000);
+		isFull=false;
+	}
+	else {
+		
+		var canvas_text = document.getElementById('result');
+		var c = canvas_text.getContext('2d');// the tank base 
+		c.clearRect(0,0,drawArea_x,drawArea_y);
+		clickEraser();
+		isFull=false;
+	}
+}
+function href_my1(){
+	var screenBlack=document.getElementById('screenBlack');
+	var vv=document.getElementById('vv');
+	vv.style.opacity=my_opacity;
+	screenBlack.style.opacity=my_opacity;
+	vv.style.display="block";
+	screenBlack.style.display="block";
+	dark=setInterval("href_my2()",50);
+}
+function href_my2(){
+	var screenBlack=document.getElementById('screenBlack');
+	var vv=document.getElementById('vv');
+	vv.style.opacity=my_opacity;
+	screenBlack.style.opacity=my_opacity+0.3;
+	my_opacity+=0.01;
+	if(my_opacity>=1){
+		clearInterval(dark);
+		setTimeout("href_my3()",1000);
+	}
+}
+function href_my3(){
+	var screenBlack=document.getElementById('screenBlack');
+	screenBlack.style.background="url(./img/screenBlack0.png)";
+	var vv=document.getElementById('vv');
+	vv.style.display="none";
+	setTimeout("href_my4()",1000);
+}
+function href_my4(){
+	window.location.href="./demo.htm";
+}
+
+function deduceInk(data){
+	var use=0;
+	var x,y;
+	for(x=0; x<data.width; x++) {
+		for(y=0; y<data.height; y++) {
+			var index = (y*data.width+x)*4;//calculate index
+			if (data.data[index+3]!=0)
+			{
+				use+=1;
+			}
+		}
+	}
+	leftInk-=use;
+}
+function clickRect(){
+	rectTool.style.background="url(./img/rectTool0.png)";
+	circleTool.style.background="url(./img/circleTool.png)";
+	freeLineTool.style.background="url(./img/freeLineTool.png)";
+	pen_width.style.display="none";
+	pen=0;
+}
+function clickCircle(){
+	rectTool.style.background="url(./img/rectTool.png)";
+	circleTool.style.background="url(./img/circleTool0.png)";
+	freeLineTool.style.background="url(./img/freeLineTool.png)";
+	pen_width.style.display="none";
+	pen=1;
+}
+function clickLine(){
+	pen=2;
+}
+function clickFreeLine(){
+	rectTool.style.background="url(./img/rectTool.png)";
+	circleTool.style.background="url(./img/circleTool.png)";
+	freeLineTool.style.background="url(./img/freeLineTool0.png)";
+	pen_width.style.display="block";
+	pen=3;
+}
+function changeW(o){
+	paint1.changeDrawWidth(o.value/10);
+	paint2.changeDrawWidth(o.value/10);
+	paint3.changeDrawWidth(o.value/10);
+	paint4.changeDrawWidth(o.value/10);
+}
+function clickEraser1(){
+	paint1.myClear();
+	deduceInk_main();
+}
+function clickEraser2(){
+	paint2.myClear();
+	deduceInk_main();
+}
+function clickEraser3(){
+	paint3.myClear();
+	deduceInk_main();
+}
+function clickRed(){
+	pen_col=0;
+	paint1.changeDrawColor("#EE2C2C");
+	paint2.changeDrawColor("#EE2C2C");
+	paint3.changeDrawColor("#EE2C2C");
+	paint4.changeDrawColor("#EE2C2C");
+	$('#red').css('width','40px');
+	$('#red').css('height','40px');
+	$('#blue').css('width','30px');
+	$('#blue').css('height','30px');
+	$('#green').css('width','30px');
+	$('#green').css('height','30px');
+	$('#yellow').css('width','30px');
+	$('#yellow').css('height','30px');
+	$('#black').css('width','30px');
+	$('#black').css('height','30px');
+
+}
+function clickBlack(){
+	pen_col=1;
+	paint1.changeDrawColor("#121212");
+	paint2.changeDrawColor("#121212");
+	paint3.changeDrawColor("#121212");
+	paint4.changeDrawColor("#121212");
+	$('#black').css('width','40px');
+	$('#black').css('height','40px');
+	$('#blue').css('width','30px');
+	$('#blue').css('height','30px');
+	$('#green').css('width','30px');
+	$('#green').css('height','30px');
+	$('#yellow').css('width','30px');
+	$('#yellow').css('height','30px');
+	$('#red').css('width','30px');
+	$('#red').css('height','30px');
+}
+function clickYellow(){
+	pen_col=3;
+	paint1.changeDrawColor("yellow");
+	paint2.changeDrawColor("yellow");
+	paint3.changeDrawColor("yellow");
+	paint4.changeDrawColor("yellow");
+	$('#yellow').css('width','40px');
+	$('#yellow').css('height','40px');
+	$('#blue').css('width','30px');
+	$('#blue').css('height','30px');
+	$('#green').css('width','30px');
+	$('#green').css('height','30px');
+	$('#black').css('width','30px');
+	$('#black').css('height','30px');
+	$('#red').css('width','30px');
+	$('#red').css('height','30px');
+}
+function clickBlue(){
+	pen_col=2;
+	paint1.changeDrawColor("#1C86EE");
+	paint2.changeDrawColor("#1C86EE");
+	paint3.changeDrawColor("#1C86EE");
+	paint4.changeDrawColor("#1C86EE");
+	$('#black').css('width','30px');
+	$('#black').css('height','30px');
+	$('#green').css('width','30px');
+	$('#green').css('height','30px');
+	$('#yellow').css('width','30px');
+	$('#yellow').css('height','30px');
+	$('#red').css('width','30px');
+	$('#red').css('height','30px');
+	$('#blue').css('width','40px');
+	$('#blue').css('height','40px');
+}
+function clickGreen(){
+	pen_col=4;
+	paint1.changeDrawColor("#7CFC00");
+	paint2.changeDrawColor("#7CFC00");
+	paint3.changeDrawColor("#7CFC00");
+	paint4.changeDrawColor("#7CFC00");
+	$('#blue').css('width','30px');
+	$('#blue').css('height','30px');
+	$('#black').css('width','30px');
+	$('#black').css('height','30px');
+	$('#yellow').css('width','30px');
+	$('#yellow').css('height','30px');
+	$('#red').css('width','30px');
+	$('#red').css('height','30px');
+	$('#green').css('width','40px');
+	$('#green').css('height','40px');
+}
+
+</script>     
+</body>  
+</html> 
