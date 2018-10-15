@@ -3,14 +3,13 @@ Draw-Attack-Online
 
 A TANK GAME online with HTML5
 
-本地运行：
+local startup：
 
-cmd命令行cd到root，运行：python   -m  SimpleHTTPServer ，形成简单的服务器环境，然后访问本地8000端口。
+1. cd to root path of the source code folder，run：python  -m  SimpleHTTPServer ，and visit: localhost:8000。
 
-运行websocket.py 开启服务器服务，否则只能玩单机了。
+2. In another console, run websocket.py , to start a server and let other players to join, or you can only play yourself
 
 
-因为游戏需服务器支持来解决跨域访问问题，这样的话本地测试有无声音的BUG。
+Maybe in local mode, there is no sound, and will be fine when deployed to a real server
 
-部署到服务器就基本没问题。
 
